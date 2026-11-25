@@ -1,7 +1,7 @@
 LABORATORIO 4 - Programacion Orientada a Objetos y Estructuras de Datos
 
 Repositorio GitHub: https://github.com/onefrencho/lab4-alumnos-ufg
-Tablero GitHub Projects: (pendiente)
+Tablero GitHub Projects: https://github.com/users/onefrencho/projects/6
 Video de demostracion (OneDrive): (pendiente)
 
 Integrantes:
