@@ -60,8 +60,14 @@ public class Alumno {
     // Celis: agregar los setters con sus validaciones
     // (edad mayor que 0, promedio entre 0 y 10, textos que no vengan vacios).
 
-    // Celis: completar toString() para que cada alumno se vea como una fila de tabla
-    // y agregar un metodo estatico encabezadoTabla() con los titulos de las columnas.
+    // Titulos de las columnas para la tabla que se muestra en consola.
+    // Se deja la firma para que GestionAlumnos ya pueda usarla.
+    // Celis: darle el mismo formato y ancho de columnas que al toString().
+    public static String encabezadoTabla() {
+        return "CARNET | NOMBRE | APELLIDO | EDAD | CARRERA | PROMEDIO | ANIO";
+    }
+
+    // Celis: completar toString() para que cada alumno se vea como una fila de tabla.
     @Override
     public String toString() {
         return carnet + " " + nombre + " " + apellido;
