@@ -1,6 +1,7 @@
 package edu.ufg.alumnos;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import edu.ufg.alumnos.ordenamiento.ComparadoresAlumno;
@@ -8,11 +9,16 @@ import edu.ufg.alumnos.servicio.GestionAlumnos;
 
 /**
  * Menu principal del laboratorio 4.
+ * Solo se encarga de pedir datos al usuario y llamar a GestionAlumnos.
  */
 public class Main {
 
     // Archivo que se usa si el usuario solo presiona Enter al importar.
     private static final String RUTA_POR_DEFECTO = "datos/alumnos.xlsx";
+
+    // Valor que devuelve leerOpcion() cuando lo escrito no es un numero.
+    private static final int OPCION_INVALIDA = -1;
+    private static final int OPCION_SALIR = 6;
 
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
@@ -25,14 +31,33 @@ public class Main {
 
             switch (opcion) {
                 case 1 -> importar(entrada, gestion);
-                case 2 -> gestion.mostrar();
-                case 3 -> gestion.ordenarYMostrar(ComparadoresAlumno.porCarnet(), "Ordenados por carnet (ascendente)");
-                case 4 -> gestion.ordenarYMostrar(ComparadoresAlumno.porApellido(), "Ordenados por apellido (ascendente)");
-                case 5 -> gestion.ordenarYMostrar(ComparadoresAlumno.porPromedioDesc(), "Ordenados por promedio (descendente)");
-                case 6 -> System.out.println("Saliendo del programa...");
-                default -> System.out.println("Opcion no valida.");
+                case 2 -> {
+                    if (hayDatos(gestion)) {
+                        gestion.mostrar();
+                    }
+                }
+                case 3 -> {
+                    if (hayDatos(gestion)) {
+                        gestion.ordenarYMostrar(ComparadoresAlumno.porCarnet(),
+                                "Ordenados por carnet (ascendente)");
+                    }
+                }
+                case 4 -> {
+                    if (hayDatos(gestion)) {
+                        gestion.ordenarYMostrar(ComparadoresAlumno.porApellido(),
+                                "Ordenados por apellido (ascendente)");
+                    }
+                }
+                case 5 -> {
+                    if (hayDatos(gestion)) {
+                        gestion.ordenarYMostrar(ComparadoresAlumno.porPromedioDesc(),
+                                "Ordenados por promedio (descendente)");
+                    }
+                }
+                case OPCION_SALIR -> System.out.println("Saliendo del programa...");
+                default -> System.out.println("Opcion no valida. Escriba un numero del 1 al 6.");
             }
-        } while (opcion != 6);
+        } while (opcion != OPCION_SALIR);
 
         entrada.close();
     }
@@ -49,14 +74,29 @@ public class Main {
         System.out.print("Seleccione una opcion: ");
     }
 
+    /**
+     * Lee la opcion del menu sin que el programa se caiga.
+     * Si escriben letras o dejan vacio devuelve OPCION_INVALIDA y el menu se repite.
+     * Si ya no hay entrada (por ejemplo se cerro la consola) se sale del programa.
+     */
     private static int leerOpcion(Scanner entrada) {
-        // Alfaro: controlar cuando escriben letras o dejan vacio (no debe cerrarse el programa).
-        return Integer.parseInt(entrada.nextLine().trim());
+        try {
+            String texto = entrada.nextLine().trim();
+            if (texto.isEmpty()) {
+                return OPCION_INVALIDA;
+            }
+            return Integer.parseInt(texto);
+        } catch (NumberFormatException e) {
+            return OPCION_INVALIDA;
+        } catch (NoSuchElementException e) {
+            return OPCION_SALIR;
+        }
     }
 
+    /** Pide la ruta del Excel y manda a importar. */
     private static void importar(Scanner entrada, GestionAlumnos gestion) {
         System.out.print("Ruta del Excel (Enter para usar " + RUTA_POR_DEFECTO + "): ");
-        String ruta = entrada.nextLine().trim();
+        String ruta = entrada.hasNextLine() ? entrada.nextLine().trim() : "";
         if (ruta.isEmpty()) {
             ruta = RUTA_POR_DEFECTO;
         }
@@ -66,8 +106,21 @@ public class Main {
             System.out.println("Alumnos importados: " + total);
         } catch (IOException e) {
             System.out.println("No se pudo leer el archivo: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            // POI lanza esta excepcion cuando el archivo existe pero no es un .xlsx valido.
+            System.out.println("El archivo no es un Excel valido (.xlsx): " + e.getMessage());
         }
     }
 
-    // Alfaro: en las opciones 2 a 5 avisar que primero hay que importar si la lista esta vacia.
+    /**
+     * Revisa que ya se haya importado algo antes de mostrar u ordenar.
+     * Asi las opciones 2 a 5 no trabajan con una lista vacia.
+     */
+    private static boolean hayDatos(GestionAlumnos gestion) {
+        if (!gestion.hayAlumnos()) {
+            System.out.println("Primero importe los estudiantes con la opcion 1.");
+            return false;
+        }
+        return true;
+    }
 }
