@@ -7,7 +7,8 @@ Lee un Excel de estudiantes con Apache POI, los guarda en un `ArrayList<Alumno>`
 | Alfaro | Repo y tablero, menú, GestionAlumnos y entrega |
 | Celis | Clase Alumno y Excel de pruebas |
 | Rene | Lectura del Excel con Apache POI |
-| Fran | Comparadores, Selection Sort y pruebas |
+| Fran | Comparadores y sus pruebas, capturas de los ordenamientos |
+| Danny | Selection Sort y sus pruebas |
 
 ## Cómo correrlo
 

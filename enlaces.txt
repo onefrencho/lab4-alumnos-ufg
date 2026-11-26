@@ -9,3 +9,4 @@ Integrantes:
 - Marco Celis
 - Rene Ruiz
 - Francisco Jimenez
+- Danny Galdamez

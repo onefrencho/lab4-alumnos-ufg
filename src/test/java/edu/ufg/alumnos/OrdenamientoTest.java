@@ -18,6 +18,6 @@ class OrdenamientoTest {
         assertEquals(0, vacia.size());
     }
 
-    // Fran: agregar pruebas para carnet, apellido y promedio,
+    // Danny: agregar pruebas para carnet, apellido y promedio,
     // y una con un solo alumno y otra con promedios repetidos.
 }
