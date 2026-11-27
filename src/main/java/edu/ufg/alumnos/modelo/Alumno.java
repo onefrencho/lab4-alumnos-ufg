@@ -14,8 +14,6 @@ public class Alumno {
     private double promedio;
     private int anioIngreso;
 
-    // Constructor completo. Lo dejamos desde la base porque ExcelReader lo necesita
-    // para crear los objetos
     public Alumno(String carnet, String nombre, String apellido, int edad,
                   String carrera, double promedio, int anioIngreso) {
         this.carnet = carnet;
@@ -114,16 +112,20 @@ public class Alumno {
         }
     }
 
-    // Titulos de las columnas para la tabla que se muestra en consola.
-    // Se deja la firma para que GestionAlumnos ya pueda usarla.
-    // Celis: darle el mismo formato y ancho de columnas que al toString().
+    // %-12s = texto alineado a la izquierda en 12 caracteres
+    // %4d   = entero alineado a la derecha en 4 caracteres
+    // %8.2f = decimal con 2 decimales en 8 caracteres
+    private static final String FORMATO_FILA =  "%-12s | %-15s | %-15s | %4s | %-25s | %8s | %6s";
+
     public static String encabezadoTabla() {
-        return "CARNET | NOMBRE | APELLIDO | EDAD | CARRERA | PROMEDIO | ANIO";
+        String titulos = String.format(FORMATO_FILA, "CARNET", "NOMBRE", "APELLIDO", "EDAD", "CARRERA", "PROMEDIO", "ANIO");
+
+        String separador = "-".repeat(titulos.length());
+        return titulos + "\n" + separador;
     }
 
-    // Celis: completar toString() para que cada alumno se vea como una fila de tabla.
     @Override
     public String toString() {
-        return carnet + " " + nombre + " " + apellido;
+        return String.format(FORMATO_FILA, carnet, nombre, apellido, edad, carrera, String.format("%.2f", promedio), anioIngreso);
     }
 }
