@@ -21,7 +21,7 @@ public final class Ordenamiento {
      * @param criterio Comparator que decide el orden
      */
     public static void seleccion(ArrayList<Alumno> alumnos, Comparator<Alumno> criterio) {
-        // Danny: implementar Selection Sort.
+        // Fran: implementar Selection Sort.
         // Por cada posicion i buscar el menor desde i hasta el final usando criterio.compare
         // y despues intercambiarlo con el de la posicion i.
         // Validar que la lista y el criterio no vengan null.
